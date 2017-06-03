@@ -80,7 +80,7 @@ def scrape_totals_single_year(year):
     df = pd.DataFrame(table, columns=cols)
     df['Yr'] = year
     df['Player'] = df['Player'].str.strip(' *')
-    print year
+    print(year)
     return df
 
 def scrape_totals():
@@ -164,7 +164,7 @@ def scrape_advanced_single_year(year):
     df = pd.DataFrame(table, columns=cols)
     df['Yr'] = year
     df['Player'] = df['Player'].str.strip(' *')
-    print year
+    print(year)
     return df
 
 def scrape_advanced():
