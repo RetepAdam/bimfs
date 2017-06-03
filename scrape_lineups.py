@@ -103,7 +103,6 @@ def scrape_lineups_full_year(year):
 
 def scrape_lineups_all_years():
     print('Lineups:')
-    print('2017')
     df = scrape_lineups_full_year(2017)
     years = range(2001,2017)
     years.sort(reverse=True)
