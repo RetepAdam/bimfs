@@ -293,7 +293,7 @@ def clean_up_names(stat_type):
 
     df['Player'] = new_names
 
-    df.to_csv('data/player_{0}.csv'.format(stat_type))
+    df.to_csv('data/player_{0}.csv'.format(stat_type), index=False)
 
 if __name__ == '__main__':
     scrape_totals()

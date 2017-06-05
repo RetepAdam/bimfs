@@ -112,5 +112,18 @@ def scrape_lineups_all_years():
         df = df.append(df2, ignore_index=True)
     df.to_csv('data/all_lineups.csv', index=False)
 
+def clean_up_lineups():
+    df = pd.read_csv('data/all_lineups.csv')
+
+    # for some reason, it won't just let me do this within the column itself, so...
+    lineup_list = []
+
+    for i in range(len(df['Lineup'])):
+        lineup_list.append(df['Lineup'][i].split(' | '))
+
+    df['Lineup'] = lineup_list
+    df.to_csv('data/all_lineups.csv', index=False)
+
 if __name__ == '__main__':
     scrape_lineups_all_years()
+    clean_up_lineups()
