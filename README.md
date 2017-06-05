@@ -10,10 +10,10 @@ GOAL: <br />
 My goal is to break players down into collections of specific skills and then cluster them based on proficiency and then use the information gained from analyzing those clusters to measure/predict the effectiveness of lineups based on the player types involved and try to gauge how easily teams might be able to replace certain player archetypes. <br />
 
 REFERENCES: <br />
-Using cosine similarity to compare college prospects to NBA players: https://github.com/bernej/NBA-Draft-2017-Player-Comparison-Generator
-From 5 to 13: Redefining the Positions in Basketball: http://www.sloansportsconference.com/content/the-13-nba-positions-using-topology-to-identify-the-different-types-of-players/
-A cluster analysis of NBA players: http://www.sloansportsconference.com/wp-content/uploads/2012/02/44-Lutz_cluster_analysis_NBA.pdf
-Justin Willard's study on positional clustering (will be able to use him as a resource): http://fansided.com/2015/09/29/nba-positions-by-clustering/
+Using cosine similarity to compare college prospects to NBA players: https://github.com/bernej/NBA-Draft-2017-Player-Comparison-Generator <br />
+From 5 to 13: Redefining the Positions in Basketball: http://www.sloansportsconference.com/content/the-13-nba-positions-using-topology-to-identify-the-different-types-of-players/ <br />
+A cluster analysis of NBA players: http://www.sloansportsconference.com/wp-content/uploads/2012/02/44-Lutz_cluster_analysis_NBA.pdf <br />
+Justin Willard's study on positional clustering (will be able to use him as a resource): http://fansided.com/2015/09/29/nba-positions-by-clustering/ <br />
 
 OUTLINE: <br />
 1. Scrape basketball-reference (already done) and other sites like NBA.com/stats, nbawowy and Synergy (as necessary) to aggregate stats/metrics required to adequately reflect specific player skills. basketball-reference should get most of it done, but NBA stats and Synergy might be more useful for shooting splits.
