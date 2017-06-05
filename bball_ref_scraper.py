@@ -177,11 +177,6 @@ def scrape_advanced():
         df = df.append(df2, ignore_index=True)
     df.to_csv('data/player_advanced.csv', index=False)
 
-import requests
-from bs4 import BeautifulSoup
-import pandas as pd
-import numpy as np
-
 def scrape_per_poss_single_year(year):
     url = "http://www.basketball-reference.com/leagues/NBA_{0}_per_poss.html".format(year)
     req = requests.get(url)
@@ -222,31 +217,29 @@ def scrape_per_poss_single_year(year):
                 stop = j
         table[i][0:stop] = [' '.join(table[i][0:stop])]
 
-    if year > 1977:
-        for i in range(len(table)):
-            if len(table[i]) == 22: # fix for 1980-2017 (and a few between 1978 and 1980)
-                table[i].insert(13, 'NaN')
-                table[i].insert(7, 'NaN')
-                table[i].insert(7, 'NaN')
-                table[i].insert(7, 'NaN')
-            if len(table[i]) == 23: # fix for 1978-2017
-                table[i].insert(7, 'NaN')
-                table[i].insert(7, 'NaN')
-                table[i].insert(7, 'NaN')
-            if len(table[i]) == 25: # fix for 1978-1979 general
-                table[i].insert(8, 'NaN')
-    if year <= 1977:
-        for i in range(len(table)):
-            if len(table[i]) == 23: # fix for 1974-1977
-                table[i].insert(15, 'NaN')
-                table[i].insert(15, 'NaN')
-                table[i].insert(8, 'NaN')
-            if len(table[i]) == 21: # fix for 1974-1977
-                table[i].insert(15, 'NaN')
-                table[i].insert(15, 'NaN')
-                table[i].insert(7, 'NaN')
-                table[i].insert(7, 'NaN')
-                table[i].insert(7, 'NaN')
+    for i in range(len(table)):
+        if len(table[i]) == 7: # empties
+            table[i].extend(['0', '0', '.000', '0', '0', '.000', '0', '0', '.000', '0', '0', '.000', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'NaN', 'NaN'])
+        if '.' in table[i][-1] and '.' in table[i][-2]: # ORtg/DRtg fix
+            table[i].extend(['NaN', 'NaN'])
+        elif '.' in table[i][-2]:
+            table[i].insert(-1, 'NaN')
+        if len(table[i]) == 26: # fix for all shooting missing
+            table[i].insert(15, '.000')
+            table[i].insert(13, '.000')
+            table[i].insert(11, '.000')
+            table[i].insert(9, '.000')
+        if len(table[i]) == 27: # fix for all shooting but FT missing
+            table[i].insert(13, '.000')
+            table[i].insert(11, '.000')
+            table[i].insert(9, '.000')
+        if len(table[i]) == 28: # fix for just 3P and FT missing
+            table[i].insert(17, '.000')
+            table[i].insert(12, '.000')
+        if len(table[i]) == 29 and table[i][12][-2] != '.': # fix for just 3P and FT missing
+            table[i].insert(18, '.000')
+        elif len(table[i]) == 29 and table[i][12][-2] == '.':
+            table[i].insert(12, '.000')
 
     cols.pop(0)
 
@@ -296,9 +289,9 @@ def clean_up_names(stat_type):
     df.to_csv('data/player_{0}.csv'.format(stat_type), index=False)
 
 if __name__ == '__main__':
-    scrape_totals()
-    clean_up_names('totals')
-    scrape_advanced()
-    clean_up_names('advanced')
+    # scrape_totals()
+    # clean_up_names('totals')
+    # scrape_advanced()
+    # clean_up_names('advanced')
     scrape_per_poss()
     clean_up_names('per_poss')
