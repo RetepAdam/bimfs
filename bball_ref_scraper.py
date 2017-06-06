@@ -86,7 +86,7 @@ def scrape_totals_single_year(year):
 def scrape_totals():
     print('Totals:')
     df = scrape_totals_single_year(2017)
-    years = range(1980,2017)
+    years = range(2001,2017)
     years.sort(reverse=True)
     for year in years:
         df2 = scrape_totals_single_year(year)
@@ -170,7 +170,7 @@ def scrape_advanced_single_year(year):
 def scrape_advanced():
     print('Advanced:')
     df = scrape_advanced_single_year(2017)
-    years = range(1974,2017)
+    years = range(2001,2017)
     years.sort(reverse=True)
     for year in years:
         df2 = scrape_advanced_single_year(year)
@@ -289,9 +289,9 @@ def clean_up_names(stat_type):
     df.to_csv('data/player_{0}.csv'.format(stat_type), index=False)
 
 if __name__ == '__main__':
-    # scrape_totals()
-    # clean_up_names('totals')
-    # scrape_advanced()
-    # clean_up_names('advanced')
+    scrape_totals()
+    clean_up_names('totals')
+    scrape_advanced()
+    clean_up_names('advanced')
     scrape_per_poss()
     clean_up_names('per_poss')
