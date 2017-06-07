@@ -290,8 +290,8 @@ def clean_up_names(stat_type):
 
 if __name__ == '__main__':
     scrape_totals()
-    clean_up_names('totals')
-    scrape_advanced()
-    clean_up_names('advanced')
-    scrape_per_poss()
-    clean_up_names('per_poss')
+    # clean_up_names('totals')
+    # scrape_advanced()
+    # clean_up_names('advanced')
+    # scrape_per_poss()
+    # clean_up_names('per_poss')

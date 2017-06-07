@@ -171,7 +171,7 @@ def scrape_per_36():
 
 def clean_up_names(stat_type):
     df = pd.read_csv('data/player_{0}.csv'.format(stat_type))
-    df['Player'] = df['Player'].str.split(' ')
+    # df['Player'] = df['Player'].str.split(' ')
 
     # a few players have two first names, so we need to address them separately
     # James Michael McAdoo = 1231
@@ -179,24 +179,24 @@ def clean_up_names(stat_type):
     # Bobby Ray Parks Jr. = 814
     # E. Victor Nickerson = 324
 
-    group = [324, 814, 1231, 4325, 4522]
+    # group = [324, 814, 1231, 4325, 4522]
+    #
+    # # abbreviating first names to match lineup data
+    # for i in range(len(df['Player'])):
+    #     if i in group:
+    #         df['Player'][i][:2] = [' '.join(df['Player'][i][:2])]
+    #     else:
+    #         df['Player'][i][1:] = [' '.join(df['Player'][i][1:])]
+    #
+    # # not sure why it won't just let me do this in the dataframe column, but scenic route it is
+    # new_names = []
+    #
+    # for i in range(len(df['Player'])):
+    #         new_names.append(df['Player'][i][0][0] + '. ' + df['Player'][i][1])
+    #
+    # df['Player'] = new_names
 
-    # abbreviating first names to match lineup data
-    for i in range(len(df['Player'])):
-        if i in group:
-            df['Player'][i][:2] = [' '.join(df['Player'][i][:2])]
-        else:
-            df['Player'][i][1:] = [' '.join(df['Player'][i][1:])]
-
-    # not sure why it won't just let me do this in the dataframe column, but scenic route it is
-    new_names = []
-
-    for i in range(len(df['Player'])):
-            new_names.append(df['Player'][i][0][0] + '. ' + df['Player'][i][1])
-
-    df['Player'] = new_names
-
-    df['Player'][451] = 'F. VanVleet' # VanVleet typo fix
+    df['Player'][451] = 'Fred VanVleet' # VanVleet typo fix
 
     df.to_csv('data/player_{0}.csv'.format(stat_type), index=False)
 
