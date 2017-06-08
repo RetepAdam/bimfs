@@ -8,6 +8,8 @@ from sklearn.linear_model import LinearRegression
 df_nba = pd.read_csv('data/rookies_from_cbb.csv')
 df_cbb = pd.read_csv('data/cbb_to_rookies.csv')
 
+df_cbb['Age'] = df_nba['Age']
+
 df_nba = df_nba[df_nba['MP'] >= 100]
 df_cbb = df_cbb[df_cbb['Player'].isin(df_nba['Player'])]
 
