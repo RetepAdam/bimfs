@@ -21,3 +21,19 @@ OUTLINE: <br />
 3. Here’s where I have a few different ideas. The simplest way to proceed from there would probably be to plug the clustering into lineup data (from basketball-reference or nbawowy) to evaluate lineup configurations, determine how teams deploy combinations of skill sets and see if any particular combinations routinely outperform the others.
 4. Having accomplished that, the next thing I would want to look at would be fungibility of specific skills. In other words, how easily are teams able to replace a member of a given cluster. I could probably just tackle this by seeing where players of each type come from and calling it a day, but if I really want to dive into it (and I do, if I have enough time), it would be prudent to try to build a model that would be able to forecast NBA performance by specific skill based on statistics from their previous league. e.g. Can you find strong rebounders pretty cheaply and easily via the D-League or international leagues, or do you have to invest significantly dra  capital to acquire those guys? This could probably be its own Capstone project, but given that it’s somewhat built on the framework provided above and I’d probably need to tinker around with it for a while, I’m not sure I’d want to have this as the headlining component of mine unless I know I have it right.
 5. Another thing I ought to be able to do (and a lot more easily than the last bit) is if the lineup analysis reveals anything interesting, I should be able to turn around and do something straightforward like put together a list of free agents the Nuggets ought to target this summer. Can’t hurt, right?
+
+### Data Collection
+
+The entirety of the information used to build the initial model has been scraped from Basketball-Reference.com and Sports-Reference.com. I also have collected data from NBA-Math, which I will use to assist in defensive modeling.
+
+### Data Prep
+
+Most of the data came packaged the way I needed it, but I did have to do some minor feature engineering to account for playing time. For college players, I added stats per 40 minutes. For NBA players, I used stats per 36. In order to get college career data compiled, I took individual seasons and summed the raw stats while taking weighted averages for cumulative metrics like PER and BPM.
+
+### Data Analysis
+
+So far, I have been using the OLS Summary and Random Forest feature importances to determine which features are creating the bulk of the signal for each individual category, with the strongest single statistic translation by far (so far) being BLK/40 to BLK/36.
+
+### Model Selection
+
+Initially, to get a solid baseline, I have been using Linear Regression and Random Forest, plus feeding in all the data to get a sense of the basic OLS Adjusted R2 for each statistical category.
