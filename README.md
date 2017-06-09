@@ -1,11 +1,4 @@
 # Galvanize DSI Capstone Project
-
-Timeline: <br />
-5/22/17 - Began constructing bball_ref scrapers. Grabbed basketballCrawler but may not be useful.<br />
-5/23/17 - Finished scrapers and merged into one file.<br />
-6/2/17 - Created lineup data scraper.<br />
-6/3/17 - Scraped all 5-man lineup data.<br />
-
 GOAL: <br />
 My goal is to break players down into collections of specific skills and then cluster them based on proficiency and then use the information gained from analyzing those clusters to measure/predict the effectiveness of lineups based on the player types involved and try to gauge how easily teams might be able to replace certain player archetypes. <br />
 
