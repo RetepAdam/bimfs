@@ -11,9 +11,9 @@ My goal is to break players down into collections of specific skills and then cl
 
 REFERENCES: <br />
 Using cosine similarity to compare college prospects to NBA players: https://github.com/bernej/NBA-Draft-2017-Player-Comparison-Generator <br />
-From 5 to 13: Redefining the Positions in Basketball: http://www.sloansportsconference.com/content/the-13-nba-positions-using-topology-to-identify-the-different-types-of-players/ <br />
-A cluster analysis of NBA players: http://www.sloansportsconference.com/wp-content/uploads/2012/02/44-Lutz_cluster_analysis_NBA.pdf <br />
-Justin Willard's study on positional clustering (will be able to use him as a resource): http://fansided.com/2015/09/29/nba-positions-by-clustering/ <br />
+How Do NCAA Statistics Translate to the NBA?: http://basketball-statistics.com/howdoncaastatisticstranslatetothenba.html <br />
+Predictions are Hard, Especially about Three Point Shooting: http://counting-the-baskets.typepad.com/my-blog/2014/09/prediction-are-hard-especially-about-three-point-shooting.html <br />
+Determinants of NBA Player Salaries: http://thesportjournal.org/article/determinants-of-nba-player-salaries/ <br />
 
 OUTLINE: <br />
 1. Scrape basketball-reference (already done) and other sites like NBA.com/stats, nbawowy and Synergy (as necessary) to aggregate stats/metrics required to adequately reflect specific player skills. basketball-reference should get most of it done, but NBA stats and Synergy might be more useful for shooting splits.
