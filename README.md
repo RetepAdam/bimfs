@@ -38,4 +38,129 @@ I've found that increasing a minutes threshold for the NBA level (100, 150, 500,
 
 Initially, to get a solid baseline, I have been using Linear Regression and Random Forest, plus feeding in all the data to get a sense of the basic OLS Adjusted R2 for each statistical category. <br />
 <br />
+FG% <br />
+RF: 0.331002324825 <br />
+Linear: 0.301271730086 <br />
+OLS R2: 0.461564878761 <br />
+
+2P% <br />
+RF: 0.234490087463 <br />
+Linear: -0.0524030590275 <br />
+OLS R2: 0.215660655293 <br />
+
+3P% <br />
+RF: 0.251868276008 <br />
+Linear: 0.362539029147 <br />
+OLS R2: 0.349651060921 <br />
+
+FT%
+RF: 0.173869541818 <br />
+Linear: -0.112468247057 <br />
+OLS R2: 0.237034943436 <br />
+
+eFG%
+RF: 0.143307500877 <br />
+Linear: 0.102052178243 <br />
+OLS R2: 0.279358289102 <br />
+
+FG/36
+RF: 0.310713995463 <br />
+Linear: 0.315636494847 <br />
+OLS R2: 0.27582529054 <br />
+
+FGA/36
+RF: 0.250261704821 <br />
+Linear: 0.360153907338 <br />
+OLS R2: 0.310364146509 <br />
+
+2P/36
+RF: 0.404702242014 <br />
+Linear: 0.372488251806 <br />
+OLS R2: 0.42326713376 <br />
+
+2PA/36
+RF: 0.32848209916 <br />
+Linear: 0.260658676098 <br />
+OLS R2: 0.375118882183 <br />
+
+3P/36
+RF: 0.570499392693 <br />
+Linear: 0.609233095001 <br />
+OLS R2: <strong>0.666265110472</strong> <br />
+
+3PA/36
+RF: 0.540593236001 <br />
+Linear: 0.548663117427 <br />
+OLS R2: <strong>0.661021266751</strong> <br />
+
+FT/36
+RF: -0.248540786327 <br />
+Linear: -0.292280592641 <br />
+OLS R2: 0.166380256555 <br />
+
+FTA/36
+RF: -0.0862557355467 <br />
+Linear: -0.105017906081 <br />
+OLS R2: 0.220135305459 <br />
+
+ORB/36
+RF: 0.65324329811 <br />
+Linear: 0.614267470364 <br />
+OLS R2: <strong>0.702508138322</strong> <br />
+
+DRB/36
+RF: 0.61195244994 <br />
+Linear: 0.650972682479 <br />
+OLS R2: <strong>0.677409522905</strong> <br />
+
+TRB/36
+RF: 0.704125368806 <br />
+Linear: 0.738194909152 <br />
+OLS R2: <strong>0.770250786813</strong> <br />
+
+AST/36
+RF: 0.646250455571 <br />
+Linear: 0.627395684621 <br />
+OLS R2: <strong>0.673976267069</strong> <br />
+
+STL/36
+RF: 0.276704392605 <br />
+Linear: 0.0677439046654 <br />
+OLS R2: 0.40525647905 <br />
+
+BLK/36
+RF: 0.640056993721 <br />
+Linear: 0.603397791923 <br />
+OLS R2: <strong>0.71778489302</strong> <br />
+
+TOV/36
+RF: 0.280506018469 <br />
+Linear: 0.047958879389 <br />
+OLS R2: 0.348854640011 <br />
+
+PF/36
+RF: 0.344897763958 <br />
+Linear: 0.158769584323 <br />
+OLS R2: 0.383640324989 <br />
+
+PTS/36
+RF: 0.220222314281 <br />
+Linear: 0.252679257239 <br />
+OLS R2: 0.214701674064 <br />
+
+TS%
+RF: 0.207551275517 <br />
+Linear: 0.041475439805 <br />
+OLS R2: 0.235686527845 <br />
+
+FTr
+RF: 0.255148923744 <br />
+Linear: 0.0743561365622 <br />
+OLS R2: 0.36785770657 <br />
+
+3PAr
+RF: 0.553298237326 <br />
+Linear: 0.519841808623 <br />
+OLS R2: <strong>0.669128922823</strong> <br />
+
 The Adjusted R2s range from 0.166 (FT/36) to 0.770 (TRB/36). With the relatively limited sample sizes I'm working off of, I'm careful not to place too much stock in the Random Forest & Linear Regression accuracy scores, since this can be pretty wildly variable depending on the train/test split (which I have been keeping static). However, the name of the game is prediction, so the goal is to increase the consistency of the model, which may just come down to being able to increase the sample space without introducing more noise.

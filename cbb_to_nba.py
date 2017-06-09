@@ -15,6 +15,7 @@ df_cbb = df_cbb[df_cbb['Player'].isin(df_nba['Player'])]
 
 X = np.array(df_cbb[df_cbb.columns[2:]])
 cols = df_nba.columns[25:]
+test = []
 for col in cols:
     print(col)
     y = np.array(df_nba[col])
@@ -29,6 +30,9 @@ for col in cols:
     model = sm.OLS(y, model_X)
     results = model.fit()
     print('RF: {0}'.format(rf.score(X_test, y_test)))
+    test.append((rf.feature_importances_))
+
+
     print('Linear: {0}'.format(regr.score(X_test, y_test)))
     print('OLS R2: {0}'.format(results.rsquared_adj))
     print('')
