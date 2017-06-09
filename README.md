@@ -39,126 +39,151 @@ I've found that increasing a minutes threshold for the NBA level (100, 150, 500,
 Initially, to get a solid baseline, I have been using Linear Regression and Random Forest, plus feeding in all the data to get a sense of the basic OLS Adjusted R2 for each statistical category. <br />
 <br />
 FG% <br />
+XGB: 0.277918393284 <br />
 RF: 0.331002324825 <br />
 Linear: 0.301271730086 <br />
 OLS R2: 0.461564878761 <br />
 
 2P% <br />
+XGB: 0.0492092031499 <br />
 RF: 0.234490087463 <br />
 Linear: -0.0524030590275 <br />
 OLS R2: 0.215660655293 <br />
 
 3P% <br />
+XGB: 0.157865594819 <br />
 RF: 0.251868276008 <br />
 Linear: 0.362539029147 <br />
 OLS R2: 0.349651060921 <br />
 
-FT%
+FT% <br />
+XGB: 0.105166725186 <br />
 RF: 0.173869541818 <br />
 Linear: -0.112468247057 <br />
 OLS R2: 0.237034943436 <br />
 
-eFG%
+eFG% <br />
+XGB: 0.0746905244666 <br />
 RF: 0.143307500877 <br />
 Linear: 0.102052178243 <br />
 OLS R2: 0.279358289102 <br />
 
-FG/36
+FG/36 <br />
+XGB: 0.205916405301 <br />
 RF: 0.310713995463 <br />
 Linear: 0.315636494847 <br />
 OLS R2: 0.27582529054 <br />
 
-FGA/36
+FGA/36 <br />
+XGB: 0.190805088731 <br />
 RF: 0.250261704821 <br />
 Linear: 0.360153907338 <br />
 OLS R2: 0.310364146509 <br />
 
-2P/36
+2P/36 <br />
+XGB: 0.394955622197 <br />
 RF: 0.404702242014 <br />
 Linear: 0.372488251806 <br />
 OLS R2: 0.42326713376 <br />
 
-2PA/36
+2PA/36 <br />
+XGB: 0.276024932285 <br />
 RF: 0.32848209916 <br />
 Linear: 0.260658676098 <br />
 OLS R2: 0.375118882183 <br />
 
-3P/36
+3P/36 <br />
+XGB: 0.551778169988 <br />
 RF: 0.570499392693 <br />
 Linear: 0.609233095001 <br />
 OLS R2: <strong>0.666265110472</strong> <br />
 
-3PA/36
+3PA/36 <br />
+XGB: 0.506029809777 <br />
 RF: 0.540593236001 <br />
 Linear: 0.548663117427 <br />
 OLS R2: <strong>0.661021266751</strong> <br />
 
-FT/36
+FT/36 <br />
+XGB: -0.162126297385 <br />
 RF: -0.248540786327 <br />
 Linear: -0.292280592641 <br />
 OLS R2: 0.166380256555 <br />
 
-FTA/36
+FTA/36 <br />
+XGB: -0.07062224559 <br />
 RF: -0.0862557355467 <br />
 Linear: -0.105017906081 <br />
 OLS R2: 0.220135305459 <br />
 
-ORB/36
+ORB/36 <br />
+XGB: 0.595402878572 <br />
 RF: 0.65324329811 <br />
 Linear: 0.614267470364 <br />
 OLS R2: <strong>0.702508138322</strong> <br />
 
-DRB/36
+DRB/36 <br />
+XGB: 0.623464997197 <br />
 RF: 0.61195244994 <br />
 Linear: 0.650972682479 <br />
 OLS R2: <strong>0.677409522905</strong> <br />
 
-TRB/36
+TRB/36 <br />
+XGB: 0.723222598815 <br />
 RF: 0.704125368806 <br />
 Linear: 0.738194909152 <br />
 OLS R2: <strong>0.770250786813</strong> <br />
 
-AST/36
+AST/36 <br />
+XGB: 0.692624450409 <br />
 RF: 0.646250455571 <br />
 Linear: 0.627395684621 <br />
 OLS R2: <strong>0.673976267069</strong> <br />
 
-STL/36
+STL/36 <br />
+XGB: 0.238584337343 <br />
 RF: 0.276704392605 <br />
 Linear: 0.0677439046654 <br />
 OLS R2: 0.40525647905 <br />
 
-BLK/36
+BLK/36 <br />
+XGB: 0.685298139229 <br />
 RF: 0.640056993721 <br />
 Linear: 0.603397791923 <br />
 OLS R2: <strong>0.71778489302</strong> <br />
 
-TOV/36
+TOV/36 <br />
+XGB: 0.261822596021 <br />
 RF: 0.280506018469 <br />
 Linear: 0.047958879389 <br />
 OLS R2: 0.348854640011 <br />
 
-PF/36
+PF/36 <br />
+XGB: 0.255267195781 <br />
 RF: 0.344897763958 <br />
 Linear: 0.158769584323 <br />
 OLS R2: 0.383640324989 <br />
 
-PTS/36
+PTS/36 <br />
+XGB: 0.0648422939816 <br />
 RF: 0.220222314281 <br />
 Linear: 0.252679257239 <br />
 OLS R2: 0.214701674064 <br />
 
-TS%
+TS% <br />
+XGB: 0.210364731606 <br />
 RF: 0.207551275517 <br />
 Linear: 0.041475439805 <br />
 OLS R2: 0.235686527845 <br />
 
-FTr
+FTr <br />
+XGB: 0.185349262179 <br />
 RF: 0.255148923744 <br />
 Linear: 0.0743561365622 <br />
 OLS R2: 0.36785770657 <br />
 
-3PAr
+3PAr <br />
+XGB: 0.478243736117 <br />
 RF: 0.553298237326 <br />
 Linear: 0.519841808623 <br />
 OLS R2: <strong>0.669128922823</strong> <br />
