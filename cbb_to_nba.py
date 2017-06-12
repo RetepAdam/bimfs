@@ -10,11 +10,12 @@ df_cbb = pd.read_csv('data/cbb_to_rookies.csv')
 
 df_cbb['Age'] = df_nba['Age']
 
-df_nba = df_nba[df_nba['MP'] >= 150]
+df_nba = df_nba[df_nba['MP'] >= 100]
 df_cbb = df_cbb[df_cbb['Player'].isin(df_nba['Player'])]
 
-X = np.array(df_cbb[df_cbb.columns[[3, 6, 7, 8, 16, 40, 41, 51, 53, 56, 60, 61, 62]]])
-cols = df_nba.columns[25:]
+X = np.array(df_cbb[df_cbb.columns[2:]])
+X = np.array(df_cbb[df_cbb.columns[[1, 6, 8, 12, 13, 15, 16, 17, 19, 29, 30, 31, 36, 38, 39, 40, 41, 43, 44, 47, 50, 54, 60, 61]]])
+cols = df_nba.columns[42:44]
 for col in cols:
     print(col)
     y = np.array(df_nba[col])
