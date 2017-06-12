@@ -189,3 +189,21 @@ Linear: 0.519841808623 <br />
 OLS R2: <strong>0.669128922823</strong> <br />
 
 The Adjusted R2s range from 0.166 (FT/36) to 0.770 (TRB/36). With the relatively limited sample sizes I'm working off of, I'm careful not to place too much stock in the Random Forest & Linear Regression accuracy scores, since this can be pretty wildly variable depending on the train/test split (which I have been keeping static). However, the name of the game is prediction, so the goal is to increase the consistency of the model, which may just come down to being able to increase the sample space without introducing more noise.
+
+
+By adjusting feature space to eliminate extraneous features, able to improve Adj. R2...
+
+3P%: .350 --> .396
+[10, 13, 14, 19, 20, 22, 24, 26, 27, 30, 33, 34, 35, 37, 43, 47, 48, 50, 51, 53, 54, 55, 59, 60, 61, 62, 63]
+
+TRB/36: .770 --> .787
+[10, 15, 16, 22, 23, 25, 27, 33, 35, 36, 37, 40, 41, 42, 44, 45, 46, 47, 48, 50, 52, 54, 55, 56, 57, 58, 59, 60, 61, 62]
+
+BLK/36: .718 --> .746
+[3, 6, 7, 8, 16, 40, 41, 51, 53, 56, 60, 61, 62]
+
+FT%: .238 --> .282
+[2, 9, 10, 14, 16, 19, 28, 29, 32, 34, 37, 38, 39, 40, 41, 44, 45, 50, 51, 53, 55, 57, 58, 60]
+
+3PAr: .669 --> .691
+[6, 7, 9, 10, 13, 14, 17, 19, 23, 25, 26, 27, 30, 33, 34, 36, 38, 39, 48, 49, 51, 52, 53, 56, 57]

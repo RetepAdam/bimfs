@@ -10,18 +10,17 @@ df_cbb = pd.read_csv('data/cbb_to_rookies.csv')
 
 df_cbb['Age'] = df_nba['Age']
 
-df_nba = df_nba[df_nba['MP'] >= 100]
+df_nba = df_nba[df_nba['MP'] >= 150]
 df_cbb = df_cbb[df_cbb['Player'].isin(df_nba['Player'])]
 
-X = np.array(df_cbb[df_cbb.columns[2:]])
+X = np.array(df_cbb[df_cbb.columns[[3, 6, 7, 8, 16, 40, 41, 51, 53, 56, 60, 61, 62]]])
 cols = df_nba.columns[25:]
-test = []
 for col in cols:
     print(col)
     y = np.array(df_nba[col])
-#
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=21)
-#
+
     rf = RandomForestRegressor(random_state=66, max_depth=5)
     rf.fit(X_train, y_train)
     regr = LinearRegression()
@@ -30,9 +29,6 @@ for col in cols:
     model = sm.OLS(y, model_X)
     results = model.fit()
     print('RF: {0}'.format(rf.score(X_test, y_test)))
-    test.append((rf.feature_importances_))
-
-
     print('Linear: {0}'.format(regr.score(X_test, y_test)))
     print('OLS R2: {0}'.format(results.rsquared_adj))
     print('')
