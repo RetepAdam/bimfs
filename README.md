@@ -1,21 +1,14 @@
 # Galvanize DSI Capstone Project
-
-Timeline: <br />
-5/22/17 - Began constructing bball_ref scrapers. Grabbed basketballCrawler but may not be useful.<br />
-5/23/17 - Finished scrapers and merged into one file.<br />
-6/2/17 - Created lineup data scraper.<br />
-6/3/17 - Scraped all 5-man lineup data.<br />
-
-GOAL: <br />
+### Goal
 My goal is to break players down into collections of specific skills and then cluster them based on proficiency and then use the information gained from analyzing those clusters to measure/predict the effectiveness of lineups based on the player types involved and try to gauge how easily teams might be able to replace certain player archetypes. <br />
 
-REFERENCES: <br />
+### References
 Using cosine similarity to compare college prospects to NBA players: https://github.com/bernej/NBA-Draft-2017-Player-Comparison-Generator <br />
 How Do NCAA Statistics Translate to the NBA?: http://basketball-statistics.com/howdoncaastatisticstranslatetothenba.html <br />
 Predictions are Hard, Especially about Three Point Shooting: http://counting-the-baskets.typepad.com/my-blog/2014/09/prediction-are-hard-especially-about-three-point-shooting.html <br />
 Determinants of NBA Player Salaries: http://thesportjournal.org/article/determinants-of-nba-player-salaries/ <br />
 
-OUTLINE: <br />
+### Outline
 1. Scrape basketball-reference (already done) and other sites like NBA.com/stats, nbawowy and Synergy (as necessary) to aggregate stats/metrics required to adequately reflect specific player skills. basketball-reference should get most of it done, but NBA stats and Synergy might be more useful for shooting splits.
 2. My goal is to determine the fungibility of specific skills. In other words, how easily are teams able to replace certain specific skills. In order to do this, I will build a model that would be able to forecast NBA performance by specific skill based on statistics from their previous league. e.g. Can you find strong rebounders pretty cheaply and easily via the D-League or international leagues, or do you have to invest significantly dra  capital to acquire those guys?
 3. After creating the model, the next step will be to determine how much teams routinely spend for each specific skill on the open market by modeling salary against performance in each skill area.
