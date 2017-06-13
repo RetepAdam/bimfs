@@ -24,6 +24,7 @@ for col in cols:
 
     rf = RandomForestRegressor(random_state=66, max_depth=5)
     rf.fit(X_train, y_train)
+    regr = LinearRegression()
     regr.fit(X_train, y_train)
     model_X = sm.add_constant(X)
     model = sm.OLS(y, model_X)
