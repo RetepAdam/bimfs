@@ -36,3 +36,4 @@ if __name__ == '__main__':
     df = pd.read_csv('data/cbb_2001_to_2017.csv')
     df = drop_mp_nulls(df)
     df_transfer_check = create_transfer_check_df(df)
+    # manually separate transfers from separate players
