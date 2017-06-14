@@ -30,7 +30,6 @@ def create_transfer_check_df(df):
     dupes = list(dupes)
     dupes = np.array(dupes)
     df_transfer_check = df_grouped.iloc[np.sort(dupes)]
-    df_transfer_check.reset_index(drop=True, inplace=True)
     return df_transfer_check
 
 if __name__ == '__main__':
