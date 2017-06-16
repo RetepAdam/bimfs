@@ -27,4 +27,5 @@ ax.scatter(range(len(df_comp)), probabilities[2])
 
 ax.set_xlabel('Index')
 ax.set_ylabel("Probability of replicating {0}'s {1}".format(selected, df_inputs.columns[4]))
+ax.set_ylim(-.025,1)
 plt.show()
