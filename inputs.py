@@ -20,12 +20,21 @@ for i in range(len(stats)):
     comp_proba = scs.norm.cdf((comp_pred - stats[i]) / (.5 * comp_err))
     probabilities.append(comp_proba)
 
-fig = plt.figure()
-ax = fig.add_subplot(111)
+for i in range(len(probabilities)):
+    for j in range(len(probabilities[i])):
+        probabilities[i][j] = round(probabilities[i][j], 3)
 
-ax.scatter(range(len(df_comp)), probabilities[2])
-
-ax.set_xlabel('Index')
-ax.set_ylabel("Probability of replicating {0}'s {1}".format(selected, df_inputs.columns[4]))
-ax.set_ylim(-.025,1)
-plt.show()
+labels = pd.DataFrame(np.array(df_comp['Player'].values), columns=['Player'])
+proba = pd.DataFrame(np.array(probabilities).T, columns=df_inputs.columns[2:])
+df_output = labels.merge(proba, left_index=True, right_index=True)
+df_output = df_output.fillna(0)
+print(df_output.head())
+# fig = plt.figure()
+# ax = fig.add_subplot(111)
+#
+# ax.scatter(range(len(df_comp)), probabilities[2])
+#
+# ax.set_xlabel('Index')
+# ax.set_ylabel("Probability of replicating {0}'s {1}".format(selected, df_inputs.columns[4]))
+# ax.set_ylim(-.025,1)
+# plt.show()
