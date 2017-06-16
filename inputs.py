@@ -23,7 +23,8 @@ for i in range(len(stats)):
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
-ax.scatter(range(len(df_comp)), probabilities[21])
+ax.scatter(range(len(df_comp)), probabilities[2])
+
 ax.set_xlabel('Index')
-ax.set_ylabel('Probability of replicating {0}'.format(df_inputs.columns[23]))
+ax.set_ylabel("Probability of replicating {0}'s {1}".format(selected, df_inputs.columns[4]))
 plt.show()
