@@ -40,7 +40,7 @@ for i, ax in zip(months, axes.flatten()):
     ax.scatter(range(len(labels)), y)
 
     ax.set_xlabel('Player Index')
-    ax.set_ylabel('{0}'.format(proba.columns[i]))
+    ax.set_ylabel("Probability of replicating {0}'s {1}".format(selected, proba.columns[i]))
 
 plt.tight_layout()
 plt.savefig('Will_Barton_all.png', dpi=600)
