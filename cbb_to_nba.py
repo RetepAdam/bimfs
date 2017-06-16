@@ -23,7 +23,7 @@ df_comp.reset_index(drop=True, inplace=True)
 nba_X_comp = np.array(df_comp[df_comp.columns[5:]])
 
 X = np.array(df_cbb[df_cbb.columns[1:]])
-cols = df_nba.columns[48:]
+cols = df_nba.columns[26:28]
 
 i = 0
 
@@ -48,9 +48,9 @@ for col in cols:
                                                 nba_X_comp)
 
     nba_yerr = np.sqrt(nba_V_IJ_unbiased)
-    #
-    # np.save('numpy/{0}_preds.npy'.format(i, col), nba_y_hat)
-    # np.save('numpy/{0}_yerr.npy'.format(i, col), nba_yerr)
+
+    # np.save('numpy/{0}_preds.npy'.format(i), nba_y_hat)
+    # np.save('numpy/{0}_yerr.npy'.format(i), nba_yerr)
     # i += 1
 
 # # Plot error bars for predicted MPG using unbiased variance

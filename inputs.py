@@ -17,6 +17,7 @@ probabilities = []
 for i in range(len(stats)):
     comp_pred = np.load('numpy/{0}_preds.npy'.format(i))
     comp_err = np.load('numpy/{0}_yerr.npy'.format(i))
+    comp_err = np.nan_to_num(comp_err)
     comp_proba = scs.norm.cdf((comp_pred - stats[i]) / (.5 * comp_err))
     probabilities.append(comp_proba)
 
@@ -39,6 +40,7 @@ for i, ax in zip(months, axes.flatten()):
 
     ax.scatter(range(len(labels)), y)
 
+    ax.set_ylim(-.01,1.01)
     ax.set_xlabel('Player Index')
     ax.set_ylabel("Probability of replicating {0}'s {1}".format(selected, proba.columns[i]))
 
