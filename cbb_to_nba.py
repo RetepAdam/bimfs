@@ -5,7 +5,6 @@ from sklearn.ensemble import RandomForestRegressor
 import statsmodels.api as sm
 from sklearn.linear_model import LinearRegression
 from matplotlib import pyplot as plt
-import sklearn.cross_validation as xval
 import forestci as fci
 from xgboost import XGBRegressor
 
@@ -19,11 +18,12 @@ df_nba = df_nba[df_nba['MP'] >= 500]
 df_cbb = df_cbb[df_cbb['Player'].isin(df_nba['Player'])]
 
 df_comp = df_comp[df_comp['MP'] >= 500]
+df_comp = df_comp[df_comp['To'] == 2017]
 df_comp.reset_index(drop=True, inplace=True)
 nba_X_comp = np.array(df_comp[df_comp.columns[5:]])
 
 X = np.array(df_cbb[df_cbb.columns[1:]])
-cols = df_nba.columns[26:28]
+cols = df_nba.columns[38:41]
 
 i = 0
 
@@ -34,7 +34,7 @@ for col in cols:
     print(col)
     y = np.array(df_nba[col])
 
-    nba_X_train, nba_X_test, nba_y_train, nba_y_test = xval.train_test_split(X, y, random_state=21)
+    nba_X_train, nba_X_test, nba_y_train, nba_y_test = train_test_split(X, y, random_state=21)
 
     # for i in range(1,20):
     nba_forest = RandomForestRegressor(n_estimators=1000, random_state=66)
