@@ -65,7 +65,7 @@ def results():
     df_output.sort_values('Sum', ascending=False, inplace=True)
     df_output.reset_index(drop=True, inplace=True)
     df_output.drop('Sum', axis=1, inplace=True)
-    return render_template('results.html', selected_player=player1, to_replicate=nba_stats, ncaa_comps=df_output.to_html(col_space=10, max_rows=10))
+    return render_template('results.html', selected_player=player1, to_replicate=nba_stats, ncaa_comps=df_output.to_html(index=False, classes='male'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
