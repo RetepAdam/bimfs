@@ -10,19 +10,21 @@
 <body>
 
 <div class="jumbotron">
-  <h1>Hooplicator</h1>
-  <h2>Select a player to be Hooplicated</h2>
+  <header id="header" class="alt"><center>
+    <span class="logo"><img src="static/img/hooplicator-gray.png" alt="" style="width:654;height:71;"/></span>
+    <p><a href="https://github.com/retepadam/bimfs" target="_blank"><span class="git-logo"><img src="static/img/github-logo.png" alt="" style="width:20;height:20;"/></span></a> <font size="3">by Peter Nygaard</font></p>
+  </center></header>
   <form>
   <fieldset disabled>
-    <form name="disabled_team">
-      <select name="disabled_team">
-      <label for="disabled_team">Select Team:</label>
+    <form name="disabled_team1">
+      <select name="disabled_team1">
+      <label for="disabled_team1">Select Team:</label>
         <option>{{ selected }}</option>
       </select>
     </form>
   </fieldset>
 </form>
-<form action="players", method='POST'>
+<form action="results", method='POST'>
 <form name="sel_player" action="results.html" method='POST'>
   <select name="sel_player">
     {% for player in options %}

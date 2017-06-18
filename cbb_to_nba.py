@@ -6,6 +6,7 @@ import statsmodels.api as sm
 from sklearn.linear_model import LinearRegression
 from matplotlib import pyplot as plt
 import forestci as fci
+import pickle
 from xgboost import XGBRegressor
 
 df_nba = pd.read_csv('data/rookies_from_cbb2.csv')
@@ -23,7 +24,7 @@ df_comp.reset_index(drop=True, inplace=True)
 nba_X_comp = np.array(df_comp[df_comp.columns[5:]])
 
 X = np.array(df_cbb[df_cbb.columns[1:]])
-cols = df_nba.columns[38:41]
+cols = df_nba.columns[25:]
 
 i = 0
 
@@ -40,15 +41,17 @@ for col in cols:
     nba_forest = RandomForestRegressor(n_estimators=1000, random_state=66)
     nba_forest.fit(nba_X_train, nba_y_train)
     print('RF: {0}'.format(nba_forest.score(nba_X_test, nba_y_test)))
-
-    nba_y_hat = nba_forest.predict(nba_X_comp)
-
-    nba_inbag = fci.calc_inbag(nba_X_train.shape[0], nba_forest)
-    nba_V_IJ_unbiased = fci.random_forest_error(nba_forest, nba_X_train,
-                                                nba_X_comp)
-
-    nba_yerr = np.sqrt(nba_V_IJ_unbiased)
-
+    # with open('models/nba_forest_{0}.pickle'.format(str.lower(col)), 'wb') as handle:
+    #         pickle.dump(nba_forest, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    #
+    # nba_y_hat = nba_forest.predict(nba_X_comp)
+    #
+    # nba_inbag = fci.calc_inbag(nba_X_train.shape[0], nba_forest)
+    # nba_V_IJ_unbiased = fci.random_forest_error(nba_forest, nba_X_train,
+    #                                             nba_X_comp)
+    #
+    # nba_yerr = np.sqrt(nba_V_IJ_unbiased)
+    #
     # np.save('numpy/{0}_preds.npy'.format(i), nba_y_hat)
     # np.save('numpy/{0}_yerr.npy'.format(i), nba_yerr)
     # i += 1

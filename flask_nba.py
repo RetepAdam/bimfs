@@ -5,6 +5,8 @@ from flask_appconfig import AppConfig
 import webbrowser, threading, os
 from flask_bootstrap import Bootstrap
 import pandas as pd
+import numpy as np
+import scipy.stats as scs
 
 # initialize the Flask app, note that all routing blocks use @app
 app = Flask(__name__)  # instantiate a flask app object
@@ -15,81 +17,55 @@ app.config['SECRET_KEY'] = 'devkey'
 app.config['RECAPTCHA_PUBLIC_KEY'] = \
     '6Lfol9cSAAAAADAkodaYl9wvQCwBMr3qGR_PPHcw'
 
-df = pd.read_csv('data/nba_inputs.csv')
+df_inputs = pd.read_csv('data/nba_inputs.csv')
+df_comp = pd.read_csv('data/cbb_comp_list.csv')
+
+df_comp = df_comp[df_comp['MP'] >= 500]
+df_comp.reset_index(drop=True, inplace=True)
 
 @app.route('/', methods = ['GET', 'POST'])  # GET is the default, more about GET and POST below
 def index():
-    return render_template('index.html', options=list(df['Tm'].unique()))
+    return render_template('index.html', options=list(df_inputs['Tm'].unique()))
 
 @app.route('/players', methods=['GET', 'POST']) # if no methods specified, default is 'GET'
 def players():
     team1 = request.values.get('sel_team')
-    return render_template('players.html', selected=team1, options=list(df[df['Tm'] == team1]['Player']))
+    return render_template('players.html', selected=team1, options=list(df_inputs[df_inputs['Tm'] == team1]['Player']))
+
+@app.route('/results', methods=['GET', 'POST']) # if no methods specified, default is 'GET'
+def results():
+    player1 = request.values.get('sel_player')
+    nba_stats = np.array(df_inputs[df_inputs['Player'] == player1][df_inputs.columns[2:]])[0]
+
+    probabilities = []
+
+    for i in range(len(nba_stats)):
+        comp_pred = np.load('numpy/{0}_preds.npy'.format(i))
+        comp_err = np.load('numpy/{0}_yerr.npy'.format(i))
+        comp_err = np.nan_to_num(comp_err)
+        if i in [19, 20]:
+            comp_proba = 1 - scs.norm.cdf((comp_pred - nba_stats[i]) / (.5 * comp_err))
+        else:
+            comp_proba = scs.norm.cdf((comp_pred - nba_stats[i]) / (.5 * comp_err))
+        probabilities.append(comp_proba)
+
+    for i in range(len(probabilities)):
+        for j in range(len(probabilities[i])):
+            probabilities[i][j] = round(probabilities[i][j], 2)
+
+    labels = pd.DataFrame(np.array(df_comp['Player'].values), columns=['Player'])
+    proba = pd.DataFrame(np.array(probabilities).T, columns=df_inputs.columns[2:])
+    proba = proba.fillna(0)
+    df_output = labels.merge(proba, left_index=True, right_index=True)
+    sums = []
+    for i in range(len(df_output)):
+        sums.append(sum(df_output.iloc[i][1:]))
+
+    df_output['Sum'] = sums
+    df_output.sort_values('Sum', ascending=False, inplace=True)
+    df_output.reset_index(drop=True, inplace=True)
+    df_output.drop('Sum', axis=1, inplace=True)
+    return render_template('results.html', selected_player=player1, to_replicate=nba_stats, ncaa_comps=df_output.to_html(col_space=10, max_rows=10))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
-
-# @app.route('/input')
-# def results():
-#     file_arr = data_names(data_path, data_type)
-#     return render_template( 'input.html', count_file = file_arr,
-#                             p_file = file_arr, plot_type = avail_figure,
-#                             p_value = p_possible)
-#
-# @app.route("/visualize", methods=['POST'])
-# def visualize():
-#     graph = request.form['graph_type']
-#     highest_p = float(request.form['p_return'])
-#     img_arr = image_names(image_path)
-#     #only special graph
-#
-#     if graph == avail_figure[-1]:
-#         df, sample_lst, gene_lst, df2 = get_dataframe_and_axes( os.path.join('data',request.form['file_1']),
-#                                                                 os.path.join('data',request.form['file_2']), 'Gene ID',
-#                                                                 highest_p)
-#         heatmap = make_heatmap_object(  df, sample_lst,
-#                                         gene_lst,df2)
-#     else:
-#         print('Unable to plot Volcano')
-#     js_resources = INLINE.render_js()
-#     css_resources = INLINE.render_css()
-#     # note that heapmap below is defined under if-name-main block
-#     script, div = components(heatmap)
-#
-#     html = render_template(
-#         'visualize.html',
-#         plot_script=script,
-#         plot_div=div,
-#         js_resources=js_resources,
-#         css_resources=css_resources,
-#         img_list = img_arr,
-#         img_path = image_path
-#         )
-#     return encode_utf8(html)
-#
-# # maybe make a landing page with redirect to data enter page.
-#
-# @app.route('/')
-# def home():
-#     return render_template('home.html')
-#
-# # about page
-# @app.route('/about')
-# def about():
-#     return render_template('about.html')
-#
-# # contact page
-# @app.route('/contact')
-# def contact():
-#     return render_template('contact.html')
-#
-# if __name__ == '__main__':
-#     #configs
-#     avail_figure = [ 'Volcano','Heatmap']
-#     data_path ='data'
-#     data_type = '.csv'
-#     image_path = 'static/fig'
-#     max_num = 200
-#     p_possible = [.05, .04, .03, .02, .01]
-#     # threading.Timer(1.25, lambda: webbrowser.open(url) ).start()
-#     app.run('0.0.0.0', port=8000)
