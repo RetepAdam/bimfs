@@ -1,0 +1,28 @@
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="jumbotron">
+  <h1>Hooplicator</h1>
+  <h2>Select a player to be Hooplicated</h2>
+  <form action="players", method='POST'>
+  <form name="sel_team" action="results.html" method='POST'>
+    <select name="sel_team">
+    <label for="sel_team">Select Team:</label>
+    {% for team in options %}
+    <option>{{ team }}</option>
+    {% endfor %}
+    </select>
+    <button type="submit">Confirm</button>
+  </form>
+</div>
+
+</body>
+</html>
