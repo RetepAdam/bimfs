@@ -41,20 +41,20 @@ for col in cols:
     nba_forest = RandomForestRegressor(n_estimators=1000, random_state=66)
     nba_forest.fit(nba_X_train, nba_y_train)
     print('RF: {0}'.format(nba_forest.score(nba_X_test, nba_y_test)))
-    # with open('models/nba_forest_{0}.pickle'.format(str.lower(col)), 'wb') as handle:
-    #         pickle.dump(nba_forest, handle, protocol=pickle.HIGHEST_PROTOCOL)
-    #
-    # nba_y_hat = nba_forest.predict(nba_X_comp)
-    #
-    # nba_inbag = fci.calc_inbag(nba_X_train.shape[0], nba_forest)
-    # nba_V_IJ_unbiased = fci.random_forest_error(nba_forest, nba_X_train,
-    #                                             nba_X_comp)
-    #
-    # nba_yerr = np.sqrt(nba_V_IJ_unbiased)
-    #
-    # np.save('numpy/{0}_preds.npy'.format(i), nba_y_hat)
-    # np.save('numpy/{0}_yerr.npy'.format(i), nba_yerr)
-    # i += 1
+    with open('models/nba_forest_{0}.pickle'.format(str.lower(col)), 'wb') as handle:
+            pickle.dump(nba_forest, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    nba_y_hat = nba_forest.predict(nba_X_comp)
+
+    nba_inbag = fci.calc_inbag(nba_X_train.shape[0], nba_forest)
+    nba_V_IJ_unbiased = fci.random_forest_error(nba_forest, nba_X_train,
+                                                nba_X_comp)
+
+    nba_yerr = np.sqrt(nba_V_IJ_unbiased)
+
+    np.save('numpy/2017_{0}_preds.npy'.format(i), nba_y_hat)
+    np.save('numpy/2017_{0}_yerr.npy'.format(i), nba_yerr)
+    i += 1
 
 # # Plot error bars for predicted MPG using unbiased variance
 # plt.errorbar(np.arange(len(nba_y_hat)), nba_y_hat, yerr=np.sqrt(nba_V_IJ_unbiased), fmt='o')
