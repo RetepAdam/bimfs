@@ -8,16 +8,17 @@ if __name__ == "__main__":
     df_nba = pd.read_csv('data/rookies_from_cbb2.csv')
     df_cbb = pd.read_csv('data/cbb_to_rookies2.csv')
 
-    df_cbb['Age'] = df_nba['Age']
-
     df_nba = df_nba[df_nba['MP'] >= 500]
     df_cbb = df_cbb[df_cbb['Player'].isin(df_nba['Player'])]
 
     X = np.array(df_cbb[df_cbb.columns[1:]])
-    y = np.array(df_nba['3P%'])
+    y = np.array(df_nba[df_nba.columns[49]])
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=21)
-    # for i in np.arange(0.01, 1, 0.01):
-    model = XGBRegressor(base_score=0.25738192342996741, learning_rate=.06, n_estimators=59)
-    model.fit(X_train, y_train)
-    score = model.score(X_test, y_test)
-    print(score)
+    test = []
+    for j in np.arange(1, 101, 1):
+        for i in np.arange(0.01, 1, 0.01):
+            model = XGBRegressor(base_score=0.46229346552682926, learning_rate=i, n_estimators=j)
+            model.fit(X_train, y_train)
+            score = model.score(X_test, y_test)
+            test.append(score)
+            print(j, i)
