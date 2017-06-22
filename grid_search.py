@@ -15,20 +15,20 @@ from sklearn.model_selection import train_test_split
 
 df_nba = pd.read_csv('data/rookies_from_cbb2.csv')
 df_cbb = pd.read_csv('data/cbb_to_rookies2.csv')
-df_comp = pd.read_csv('data/cbb_comp_list.csv')
+# df_comp = pd.read_csv('data/cbb_comp_list.csv')
 
 df_nba = df_nba[df_nba['MP'] >= 500]
 df_cbb = df_cbb[df_cbb['Player'].isin(df_nba['Player'])]
 
-df_comp = df_comp[df_comp['MP'] >= 500]
-df_comp = df_comp[df_comp['To'] == 2017]
-df_comp.reset_index(drop=True, inplace=True)
-nba_X_comp = np.array(df_comp[df_comp.columns[5:]])
+# df_comp = df_comp[df_comp['MP'] >= 500]
+# df_comp = df_comp[df_comp['To'] == 2017]
+# df_comp.reset_index(drop=True, inplace=True)
+# nba_X_comp = np.array(df_comp[df_comp.columns[5:]])
 
 X = np.array(df_cbb[df_cbb.columns[1:]])
-y = np.array(df_nba['3P_PCT'])
+y = np.array(df_nba[df_nba.columns[46]])
 # build a classifier
-nba_forest = RandomForestRegressor(n_estimators=1000, random_state=66)
+nba_forest = RandomForestRegressor(n_estimators=100, random_state=66)
 
 # nba_X_train, nba_X_test, nba_y_train, nba_y_test = train_test_split(X, y, random_state=21)
 

@@ -22,6 +22,7 @@ df_comp = pd.read_csv('data/cbb_comp_list.csv')
 
 df_comp = df_comp[df_comp['MP'] >= 500]
 df_comp = df_comp[df_comp['To'] == 2017]
+
 df_comp.reset_index(drop=True, inplace=True)
 
 @app.route('/', methods = ['GET', 'POST'])  # GET is the default, more about GET and POST below
