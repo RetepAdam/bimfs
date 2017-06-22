@@ -26,23 +26,23 @@ nba_X_comp = np.array(df_comp[df_comp.columns[5:]])
 X = np.array(df_cbb[df_cbb.columns[1:]])
 cols = df_nba.columns[25:]
 
-i = 0
-
 # fig, axes = plt.subplots(1,3, figsize=(12,4))
 
 # for col, ax in zip(cols, axes.flatten()):
-for col in cols:
-    print(col)
+for i in range(len(cols)):
+    col = cols[i]
     y = np.array(df_nba[col])
 
     nba_X_train, nba_X_test, nba_y_train, nba_y_test = train_test_split(X, y, random_state=21)
 
     # for i in range(1,20):
-    nba_forest = RandomForestRegressor(n_estimators=1000, random_state=66)
-    nba_forest.fit(nba_X_train, nba_y_train)
-    print('RF: {0}'.format(nba_forest.score(nba_X_test, nba_y_test)))
-    with open('models/nba_forest_{0}.pickle'.format(str.lower(col)), 'wb') as handle:
-            pickle.dump(nba_forest, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    with open('models/nba_forest_{0}.pickle'.format(col), "rb") as input_file:
+        nba_forest = pickle.load(input_file)
+    # nba_forest = RandomForestRegressor(n_estimators=1000, random_state=66)
+    # nba_forest.fit(nba_X_train, nba_y_train)
+    # print('RF: {0}'.format(nba_forest.score(nba_X_test, nba_y_test)))
+    # with open('models/nba_forest_{0}.pickle'.format(str.lower(col)), 'wb') as handle:
+    #         pickle.dump(nba_forest, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     nba_y_hat = nba_forest.predict(nba_X_comp)
 
@@ -54,7 +54,8 @@ for col in cols:
 
     np.save('numpy/2017_{0}_preds.npy'.format(i), nba_y_hat)
     np.save('numpy/2017_{0}_yerr.npy'.format(i), nba_yerr)
-    i += 1
+    print(col)
+    # i += 1
 
 # # Plot error bars for predicted MPG using unbiased variance
 # plt.errorbar(np.arange(len(nba_y_hat)), nba_y_hat, yerr=np.sqrt(nba_V_IJ_unbiased), fmt='o')
