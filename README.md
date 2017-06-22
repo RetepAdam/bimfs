@@ -1,6 +1,30 @@
-# Galvanize DSI Capstone Project
-### Goal
-My goal is to break players down into collections of specific skills and then cluster them based on proficiency and then use the information gained from analyzing those clusters to measure/predict the effectiveness of lineups based on the player types involved and try to gauge how easily teams might be able to replace certain player archetypes. <br />
+# Hooplicator
+
+## Mission Statement
+In the National Basketball Association (NBA), teams operate under a salary cap, meaning there is a finite amount of money they are allowed to spend on players. Because of this, being able to spend efficiently and derive the most “bang for your buck” on player salaries is of the utmost importance.
+
+Where this becomes difficult is when a team has a player who fits its system really well but suddenly, due to contract expiry, becomes much pricier. Ideally, the team would be able to replicate the costlier player’s production without having to break the bank to keep them by finding a ‘Hooplicate.’
+
+With the above in mind, the goals for the Hooplicator are twofold:
+
+1. Create a model that enables teams to identify players who will be able to replicate the production of a given current player.
+
+2. Identify player skills that, based on the model, are more easily replaceable to prioritize where teams should be willing to spend and where they can expect production from replacement-level talent.
+
+## Table of Contents
+1. [Data Collection](#data-collection)
+2. [Data Prep](#data-prep)
+    * [Glossary](#glossary)
+2. [Acoustic Features of Speech](#acoustic-features-of-speech)
+    * [Segmentation](#segmentation-code)
+    * [Feature Extraction](#feature-extraction-code)
+3. [Convolutional Neural Networks](#convolutional-neural-networks)
+    * [Class Imbalance](#class-imbalance-code)
+    * [Model Architecture](#model-architecture-code)
+    * [Training the Model](#training-the-model)  
+    * [Results](#results)
+4. [Donate Your Data](#donate-your-data-code)
+5. [Future Directions](#future-directions)
 
 ### References
 Using cosine similarity to compare college prospects to NBA players: https://github.com/bernej/NBA-Draft-2017-Player-Comparison-Generator <br />
@@ -8,18 +32,49 @@ How Do NCAA Statistics Translate to the NBA?: http://basketball-statistics.com/h
 Predictions are Hard, Especially about Three Point Shooting: http://counting-the-baskets.typepad.com/my-blog/2014/09/prediction-are-hard-especially-about-three-point-shooting.html <br />
 Determinants of NBA Player Salaries: http://thesportjournal.org/article/determinants-of-nba-player-salaries/ <br />
 
-### Outline
-1. Scrape basketball-reference (already done) and other sites like NBA.com/stats, nbawowy and Synergy (as necessary) to aggregate stats/metrics required to adequately reflect specific player skills. basketball-reference should get most of it done, but NBA stats and Synergy might be more useful for shooting splits.
-2. My goal is to determine the fungibility of specific skills. In other words, how easily are teams able to replace certain specific skills. In order to do this, I will build a model that would be able to forecast NBA performance by specific skill based on statistics from their previous league. e.g. Can you find strong rebounders pretty cheaply and easily via the D-League or international leagues, or do you have to invest significantly dra  capital to acquire those guys?
-3. After creating the model, the next step will be to determine how much teams routinely spend for each specific skill on the open market by modeling salary against performance in each skill area.
+## Data Collection
 
-### Data Collection
+All data for the project was scraped from Basketball-Reference.com and its sibling site Sports-Reference.com (for college basketball statistics) using BeautifulSoup to collect data from the yearly statistics into a list of numpy arrays (by row), compiled into a Pandas dataframe.
 
-The entirety of the information used to build the initial model has been scraped from Basketball-Reference.com and Sports-Reference.com. I also been sent TPA (Total Points Added) metric data from Adam Fromal of NBA-Math, which I will use to assist in generalized defensive modeling outside of simple box score projection.
+<img alt="Basketball-Reference scraping example" src="images/bkref.png" width='400'><br />
+<em>An example of the tables from which the NBA data was scraped.</em>
 
-### Data Prep
+<img alt="Sports-Reference scraping example" src="images/sports-ref.png" width='400'><br />
+<em>An example of the tables from which the NCAA data was scraped.</em>
 
-Most of the data came packaged the way I needed it, but I did have to do some minor feature engineering to account for playing time. For college players, I added stats per 40 minutes. For NBA players, I used stats per 36. In order to get college career data compiled, I took individual seasons and summed the raw stats while taking weighted averages for cumulative metrics like PER and BPM. Since the scraped NBA data did not have any identifying features to resolve situations where there were duplicate names (in addition to some players having transferred), I relied on comparing final college season to first NBA season to make sure I was looking at the right player, and in the cases of multiple players with the same names, resolved a handful of issues manually by simply checking their Sports-Reference page and seeing if it was linked to an NBA-level Basketball-Reference page. There were maybe 10-15 of these that needed resolving.
+For certain players with insufficient minutes or from years where certain statistic were not available, additional code was placed into the scraper to input NaN values where the table remained empty, in order to keep row lengths the same during the compilation process.
+
+## Data Prep
+
+Most of the data came packaged the way I needed it, but I did have to do some minor feature engineering to account for playing time. For college players, I added stats per 40 minutes. For NBA players, I used stats per 36. In order to get college career data compiled, I took individual seasons and summed the raw stats while taking weighted averages for cumulative metrics like PER and BPM.
+
+Since the scraped NBA data did not have any identifying features to resolve situations where there were duplicate names (in addition to some players having transferred), I relied on comparing final college season to first NBA season to make sure I was looking at the right player, and in the cases of multiple players with the same names, resolved a number of issues manually by simply checking their Sports-Reference page and seeing if it was linked to an NBA-level Basketball-Reference page. Had I gone page-by-page when I scraped Basketball-Reference, I would have been able to compare against the college listed or based on player ID; however, having scraped from the full-year statistics page, I ended up having to do more work here as a trade-off for the convenience it afforded me earlier on.
+
+### Glossary
+
+| Statistic  | Meaning  |
+|---|---|
+| FG% | Field Goal Percentage <br /> (FG/FGA) |
+| 2P% | 2-Point Field Goal Percentage <br /> (2P/2PA) |
+| 3P% | 3-Point Field Goal Percentage <br /> (3P/3PA) |
+| FT% | Free Throw Percentage <br /> (FT/FTA) |
+| FG/36 or <br /> FGA/36 | Field Goals (Attempts) Per 36 Minutes <br /> (FG or FGA/Minutes Played) x 36 |
+| 2P/36 or <br /> 2PA/36 | 2-Point Field Goals (Attempts) Per 36 Minutes <br /> (2P or 2PA/Minutes Played) x 36 |
+| 3P/36 or <br /> 3PA/36 | 3-Point Field Goals (Attempts) Per 36 Minutes <br /> (3P or 3PA/Minutes Played) x 36 |
+| FT/36 or <br /> FTA/36 | Free Throws (Attempts) Per 36 Minutes <br /> (FT or FTA/Minutes Played) x 36 |
+| ORB/36 | Offensive Rebounds Per 36 Minutes <br /> (ORB/Minutes Played) x 36 |
+| DRB/36 | Defensive Rebounds Per 36 Minutes <br /> (DRB/Minutes Played) x 36 |
+| TRB/36 | Total Rebounds Per 36 Minutes <br /> (TRB/Minutes Played) x 36 |
+| AST/36 | Assists Per 36 Minutes <br /> (AST/Minutes Played) x 36 |
+| STL/36 | Steals Per 36 Minutes <br /> (STL/Minutes Played) x 36 |
+| BLK/36 | Blocks Per 36 Minutes <br /> (BLK/Minutes Played) x 36 |
+| TOV/36 | Turnovers Per 36 Minutes <br /> (TOV/Minutes Played) x 36 |
+| PF/36 | Personal Fouls Per 36 Minutes <br /> (PF/Minutes Played) x 36 |
+| PTS/36 | Points Per 36 Minutes <br /> (PTS/Minutes Played) x 36 |
+| eFG% | Effective Field Goal Percentage <br /> (FG + (0.5 x 3P))/FGA |
+| TS% | True Shooting Percentage <br /> (PTS/(2 x (FGA + (0.44 x FTA)))) x 100 |
+| 3PAr | 3-Point Attempts Rate <br /> (3PA/FGA) |
+| FTr | Free Throw Rate <br /> (FTA/FGA) |
 
 ### Data Analysis
 
@@ -182,33 +237,3 @@ Linear: 0.519841808623 <br />
 OLS R2: <strong>0.669128922823</strong> <br />
 
 The Adjusted R2s range from 0.166 (FT/36) to 0.770 (TRB/36). With the relatively limited sample sizes I'm working off of, I'm careful not to place too much stock in the Random Forest & Linear Regression accuracy scores, since this can be pretty wildly variable depending on the train/test split (which I have been keeping static). However, the name of the game is prediction, so the goal is to increase the consistency of the model, which may just come down to being able to increase the sample space without introducing more noise.
-
-
-By adjusting feature space to eliminate extraneous features, able to improve Adj. R2...
-
-3P%: .350 --> .396
-[10, 13, 14, 19, 20, 22, 24, 26, 27, 30, 33, 34, 35, 37, 43, 47, 48, 50, 51, 53, 54, 55, 59, 60, 61, 62, 63]
-
-TRB/36: .770 --> .787
-[10, 15, 16, 22, 23, 25, 27, 33, 35, 36, 37, 40, 41, 42, 44, 45, 46, 47, 48, 50, 52, 54, 55, 56, 57, 58, 59, 60, 61, 62]
-
-STL/36: .406 --> .454
-[1, 6, 8, 12, 13, 15, 16, 17, 19, 29, 30, 31, 36, 38, 39, 40, 41, 43, 44, 47, 50, 54, 60, 61]
-
-BLK/36: .718 --> .746
-[3, 6, 7, 8, 16, 40, 41, 51, 53, 56, 60, 61, 62]
-
-FT%: .238 --> .282
-[2, 9, 10, 14, 16, 19, 28, 29, 32, 34, 37, 38, 39, 40, 41, 44, 45, 50, 51, 53, 55, 57, 58, 60]
-
-AST/36: .677 --> .702
-[2, 9, 10, 19, 27, 30, 33, 38, 40, 43, 44, 49, 51, 54, 56]
-
-TOV/36: .350 --> .392
-[12, 13, 16, 17, 18, 19, 20, 21, 22, 23, 26, 27, 29, 32, 34, 37, 38, 40, 41, 42, 44, 49, 50, 51, 52, 53, 54, 55, 57, 58, 61]
-
-FTr: .367 --> .420
-[7, 8, 9, 10, 16, 17, 20, 29, 39, 40, 42, 44, 46, 47, 48, 50, 51, 52, 55, 59, 60, 63]
-
-3PAr: .669 --> .691
-[6, 7, 9, 10, 13, 14, 17, 19, 23, 25, 26, 27, 30, 33, 34, 36, 38, 39, 48, 49, 51, 52, 53, 56, 57]
