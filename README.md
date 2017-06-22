@@ -15,16 +15,12 @@ With the above in mind, the goals for the Hooplicator are twofold:
 1. [Data Collection](#data-collection)
 2. [Data Prep](#data-prep)
     * [Glossary](#glossary)
-2. [Acoustic Features of Speech](#acoustic-features-of-speech)
-    * [Segmentation](#segmentation-code)
-    * [Feature Extraction](#feature-extraction-code)
-3. [Convolutional Neural Networks](#convolutional-neural-networks)
-    * [Class Imbalance](#class-imbalance-code)
-    * [Model Architecture](#model-architecture-code)
-    * [Training the Model](#training-the-model)  
-    * [Results](#results)
-4. [Donate Your Data](#donate-your-data-code)
-5. [Future Directions](#future-directions)
+3. [Approach](#approach)
+4. [Model Selection](#model-selection)
+5. [Results](#results)
+6. [Conclusions](#conclusions)
+7. [Next Steps](#next-steps)
+8. [References](#references)
 
 ### References
 Using cosine similarity to compare college prospects to NBA players: https://github.com/bernej/NBA-Draft-2017-Player-Comparison-Generator <br />
@@ -36,10 +32,10 @@ Determinants of NBA Player Salaries: http://thesportjournal.org/article/determin
 
 All data for the project was scraped from Basketball-Reference.com and its sibling site Sports-Reference.com (for college basketball statistics) using BeautifulSoup to collect data from the yearly statistics into a list of numpy arrays (by row), compiled into a Pandas dataframe.
 
-<img alt="Basketball-Reference scraping example" src="images/bkref.png" width='400'><br />
+<img alt="Basketball-Reference scraping example" src="images/bkref.png" width='600'><br />
 <em>An example of the tables from which the NBA data was scraped.</em>
 
-<img alt="Sports-Reference scraping example" src="images/sports-ref.png" width='400'><br />
+<img alt="Sports-Reference scraping example" src="images/sports-ref.png" width='600'><br />
 <em>An example of the tables from which the NCAA data was scraped.</em>
 
 For certain players with insufficient minutes or from years where certain statistic were not available, additional code was placed into the scraper to input NaN values where the table remained empty, in order to keep row lengths the same during the compilation process.
@@ -76,164 +72,55 @@ Since the scraped NBA data did not have any identifying features to resolve situ
 | 3PAr | 3-Point Attempts Rate <br /> (3PA/FGA) |
 | FTr | Free Throw Rate <br /> (FTA/FGA) |
 
-### Data Analysis
+## Approach
 
-So far, I have been using the OLS Summary and Random Forest feature importances to determine which features are creating the bulk of the signal for each individual category, with the strongest single statistic translation by far (so far) being BLK/40 to BLK/36. <br />
-<br />
-I've found that increasing a minutes threshold for the NBA level (100, 150, 500, 1000 minutes, etc.) has helped improve signal, but I don't want to lose out on sample size by setting higher standards (plus, there will be a little bit of survivorship bias), so two ways that I may be able to increase my sample space are to revise my NBA pool to players in their first season of playing a certain number of minutes rather than outright rookie year. This is justifiable since some of the rookies in the pool anyway are overaged, having taken the long way around to the NBA. The other way would be to simply have my college data go even futher back. The biggest issue with this is that Minutes Played data only goes back reliably to 2009-10, so I will be unable to engineer the per-minute features for some players, and many of those rank highly in importance. However, I could potentially get around this issue by just dropping players for whom that type of feature engineering is not possible. Without knowing the reasons behind why or why not a player's minutes would have been tracked (perhaps major conference players have their minutes data listed while minor conference players don't?), it's hard to know whether or not this may introduce an element of bias to the analysis, but a larger sample space would likely be worth what is probably a very minor trade-off. At the very least, if that separation can be recognized, I could split the model along those lines if need be.
+In order to aggregate the data necessary to construct the model, I scraped the online basketball data basketball-reference to retrieve both career college statistics and rookie-year NBA statistics, using rookie-year data to get the most accurate reflection of out-of-the-box production for college players. By starting with college statistics rather than trying to translate from other various leagues (D-League, international, etc.), I was able to tap into an immense data set on the college side — and since the NCAA remains the largest point of entry for incoming NBA players, I guaranteed myself a large enough set of NBA rookies for the output end of the model.
+
+To model production from college career to NBA rookie year, I filtered the database to only include players who had been NBA rookies since 2000 and appeared in the college database as well (i.e. no international players). Additionally, I set a threshold of 500 minutes played among rookies in order to reduce the amount of noise from who hadn’t seen the floor enough for their numbers to begin to stabilize. After starting with a threshold of 100 minutes played, I continued raising the threshold until finding comfortable middle ground between improvement of the model’s accuracy and maintaining a large enough sample size to avoid overfitting at 500 MP.
+
+I decided to fit a model for each individual skill we were looking to replicate so as to keep each individual skill wholly separate. This meant training 25 different models on the 57 features I had culled or engineered.
+
 
 ### Model Selection
 
-Initially, to get a solid baseline, I have been using Linear Regression and Random Forest, plus feeding in all the data to get a sense of the basic OLS Adjusted R2 for each statistical category. <br />
-<br />
-FG% <br />
-XGB: 0.277918393284 <br />
-RF: 0.331002324825 <br />
-Linear: 0.301271730086 <br />
-OLS R2: 0.461564878761 <br />
+For each statistic, I trained standard linear models, random forest regressors and XGBoost on the data in order to generate predictions, with the latter two yielding the best results across the board.
 
-2P% <br />
-XGB: 0.0492092031499 <br />
-RF: 0.234490087463 <br />
-Linear: -0.0524030590275 <br />
-OLS R2: 0.215660655293 <br />
+As expected, Random Forests and XGBoost both outperformed the linear model by a comfortable margin, with XGBoost often slightly outpacing Random Forests
 
-3P% <br />
-XGB: 0.323608132063 <br />
-RF: 0.251868276008 <br />
-Linear: 0.362539029147 <br />
-OLS R2: 0.349651060921 <br />
+However, since my goal was not just to generate predictions but to gauge the probabilities of a player being able to replace another player, I ran each random forest for 1,000 iterations and utilized infinitesimal jackknife to extract the final landing node for each tree in each forest in order to establish a baseline for the probabilities of each final outcome based on input. The program I used for this process was able to provide me with error bars, which were normally distributed across a 95% confidence interval.
 
-FT% <br />
-XGB: 0.239002800556 <br />
-RF: 0.173869541818 <br />
-Linear: -0.112468247057 <br />
-OLS R2: 0.237034943436 <br />
+<img alt="" src="images/ij.png" width='600'><br />
 
-eFG% <br />
-XGB: 0.0746905244666 <br />
-RF: 0.143307500877 <br />
-Linear: 0.102052178243 <br />
-OLS R2: 0.279358289102 <br />
+This allowed me to reverse engineer probabilities for each player against a given threshold for every single statistic. In other words, if I set a specific target for, say, 3-point percentage, I would be able to model the probability of each player in the comparison database achieving a 3-point percentage of that number or greater.
 
-FG/36 <br />
-XGB: 0.205916405301 <br />
-RF: 0.310713995463 <br />
-Linear: 0.315636494847 <br />
-OLS R2: 0.27582529054 <br />
+After running the model and using a grid search to tune the hyperparameters for optimal performance, I pickled each individual model for each separate statistic and also saved numpy arrays of the predictions for the comparison set, as well as the error bars, so when I compared them against NBA player inputs, I would not have to run the model again.
 
-FGA/36 <br />
-XGB: 0.190805088731 <br />
-RF: 0.250261704821 <br />
-Linear: 0.360153907338 <br />
-OLS R2: 0.310364146509 <br />
+## Results
 
-2P/36 <br />
-XGB: 0.394955622197 <br />
-RF: 0.404702242014 <br />
-Linear: 0.372488251806 <br />
-OLS R2: 0.42326713376 <br />
+<img alt="" src="images/models1.png" width='600'><br />
+<img alt="" src="images/models2.png" width='600'><br />
+<img alt="" src="images/models3.png" width='600'><br />
 
-2PA/36 <br />
-XGB: 0.276024932285 <br />
-RF: 0.32848209916 <br />
-Linear: 0.260658676098 <br />
-OLS R2: 0.375118882183 <br />
+<img alt="" src="images/league_averages.png" width='600'><br />
 
-3P/36 <br />
-XGB: 0.551778169988 <br />
-RF: 0.570499392693 <br />
-Linear: 0.609233095001 <br />
-OLS R2: <strong>0.666265110472</strong> <br />
+## Conclusions
 
-3PA/36 <br />
-XGB: 0.506029809777 <br />
-RF: 0.540593236001 <br />
-Linear: 0.548663117427 <br />
-OLS R2: <strong>0.661021266751</strong> <br />
+The Hooplicator model was best able to predict 3-point statistics, all three rebounding statistic rates, assist rate, block rate and shooting tendencies.
 
-FT/36 <br />
-XGB: -0.162126297385 <br />
-RF: -0.248540786327 <br />
-Linear: -0.292280592641 <br />
-OLS R2: 0.166380256555 <br />
+Cross-referencing these statistics against the probability distributions for each statistic, we can see that while it is easy to find players who fancy themselves 3-point shooters, it is much more difficult to find players who one can actually expect to make NBA 3-pointers at even a league average rate.
 
-FTA/36 <br />
-XGB: -0.07062224559 <br />
-RF: -0.0862557355467 <br />
-Linear: -0.105017906081 <br />
-OLS R2: 0.220135305459 <br />
+On the flip side, offensive rebounding is an area where there is a healthy distribution of players who could be expected to produce at an average level or better, same with creating steals and getting to the free throw line — though it must be stressed that this is in comparison to the league average mark. It would likely prove much more difficult to find players able to get to the free throw line with the frequency of a James Harden or Jimmy Butler.
 
-ORB/36 <br />
-XGB: 0.643865200891 <br />
-RF: 0.65324329811 <br />
-Linear: 0.614267470364 <br />
-OLS R2: <strong>0.702508138322</strong> <br />
+## Next Steps
 
-DRB/36 <br />
-XGB: 0.65746464092160473 <br />
-RF: 0.61195244994 <br />
-Linear: 0.650972682479 <br />
-OLS R2: <strong>0.677409522905</strong> <br />
+Ideally, I will be able to continue to improve upon the model and perhaps find a way to model defensive prowess beyond blocks, steals and rebounds.
 
-TRB/36 <br />
-XGB: 0.74905353563572674 <br />
-RF: 0.704125368806 <br />
-Linear: 0.738194909152 <br />
-OLS R2: <strong>0.770250786813</strong> <br />
+However, in lieu of being able to continue to improve upon the model itself, the next step to utilize this information will be to either construct a similar type of model or use clustering to try to determine how much teams are paying for each individual skill/statistic. By assigning a cost variable to each, we can further elucidate which skills are being overvalued by teams and which may exist as market inefficiencies with a strong value-to-cost ratio.
 
-AST/36 <br />
-XGB: 0.692624450409 <br />
-RF: 0.646250455571 <br />
-Linear: 0.627395684621 <br />
-OLS R2: <strong>0.673976267069</strong> <br />
+## References
 
-STL/36 <br />
-XGB: 0.238584337343 <br />
-RF: 0.276704392605 <br />
-Linear: 0.0677439046654 <br />
-OLS R2: 0.40525647905 <br />
+[1] Wager, S., Hastie, T., & Efron, B. (2014). Confidence Intervals for Random Forests: The Jackknife and the Infinitesimal Jackknife. Journal of Machine Learning Research.
 
-BLK/36 <br />
-XGB: 0.693912740706 <br />
-RF: 0.640056993721 <br />
-Linear: 0.603397791923 <br />
-OLS R2: <strong>0.71778489302</strong> <br />
+[2] Nichols, J. (2009). How Do NCAA Statistics Translate to the NBA? Retrieved from http://basketball-statistics.com/howdoncaastatisticstranslatetothenba.html
 
-TOV/36 <br />
-XGB: 0.261822596021 <br />
-RF: 0.280506018469 <br />
-Linear: 0.047958879389 <br />
-OLS R2: 0.348854640011 <br />
-
-PF/36 <br />
-XGB: 0.255267195781 <br />
-RF: 0.344897763958 <br />
-Linear: 0.158769584323 <br />
-OLS R2: 0.383640324989 <br />
-
-PTS/36 <br />
-XGB: 0.0648422939816 <br />
-RF: 0.220222314281 <br />
-Linear: 0.252679257239 <br />
-OLS R2: 0.214701674064 <br />
-
-TS% <br />
-XGB: 0.210364731606 <br />
-RF: 0.207551275517 <br />
-Linear: 0.041475439805 <br />
-OLS R2: 0.235686527845 <br />
-
-FTr <br />
-XGB: 0.185349262179 <br />
-RF: 0.255148923744 <br />
-Linear: 0.0743561365622 <br />
-OLS R2: 0.36785770657 <br />
-
-3PAr <br />
-XGB: 0.478243736117 <br />
-RF: 0.553298237326 <br />
-Linear: 0.519841808623 <br />
-OLS R2: <strong>0.669128922823</strong> <br />
-
-The Adjusted R2s range from 0.166 (FT/36) to 0.770 (TRB/36). With the relatively limited sample sizes I'm working off of, I'm careful not to place too much stock in the Random Forest & Linear Regression accuracy scores, since this can be pretty wildly variable depending on the train/test split (which I have been keeping static). However, the name of the game is prediction, so the goal is to increase the consistency of the model, which may just come down to being able to increase the sample space without introducing more noise.
+[3] Johnson, A. (2014). Predictions Are Hard, Especially About Three Point Shooting. Counting The Baskets.  Retrieved from http://counting-the-baskets.typepad.com/my-blog/2014/09/prediction-are-hard-especially-about-three-point-shooting.html

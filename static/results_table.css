@@ -1,3 +1,5 @@
+/*Template modified from: https://sarahleejane.github.io/learning/python/2015/08/09/simple-tables-in-webapps-using-flask-and-pandas-with-python.html*/
+
 body            { font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;}
 a, h1, h2       { color: #377ba8; }
 h1, h2          { margin: 0; }
@@ -33,7 +35,7 @@ table.dataframe, .dataframe th, .dataframe td {
 
 .male tbody {
   overflow: auto;
-  height: 1000px;
+  height: 500px;
   display: block;
 }
 
