@@ -29,7 +29,7 @@ cols = df_nba.columns[25:]
 # fig, axes = plt.subplots(1,3, figsize=(12,4))
 
 # for col, ax in zip(cols, axes.flatten()):
-for i in range(len(cols)):
+for i in [12, 13]:
     col = cols[i]
     y = np.array(df_nba[col])
 
@@ -52,9 +52,9 @@ for i in range(len(cols)):
 
     nba_yerr = np.sqrt(nba_V_IJ_unbiased)
 
-    np.save('numpy/2017_{0}_preds.npy'.format(i), nba_y_hat)
-    np.save('numpy/2017_{0}_yerr.npy'.format(i), nba_yerr)
-    print(col)
+    # np.save('numpy/2017_{0}_preds.npy'.format(i), nba_y_hat)
+    # np.save('numpy/2017_{0}_yerr.npy'.format(i), nba_yerr)
+    # print(col)
     # i += 1
 
 # # Plot error bars for predicted MPG using unbiased variance
