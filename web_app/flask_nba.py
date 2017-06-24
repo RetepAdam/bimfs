@@ -17,8 +17,8 @@ app.config['SECRET_KEY'] = 'devkey'
 app.config['RECAPTCHA_PUBLIC_KEY'] = \
     '6Lfol9cSAAAAADAkodaYl9wvQCwBMr3qGR_PPHcw'
 
-df_inputs = pd.read_csv('data/nba_inputs.csv')
-df_comp = pd.read_csv('data/cbb_comp_list.csv')
+df_inputs = pd.read_csv('../src/data/nba_inputs.csv')
+df_comp = pd.read_csv('../src/data/cbb_comp_list.csv')
 
 df_comp = df_comp[df_comp['MP'] >= 500]
 df_comp = df_comp[df_comp['To'] == 2017]
@@ -42,8 +42,8 @@ def results():
     probabilities = []
 
     for i in range(len(nba_stats)):
-        comp_pred = np.load('numpy/2017_{0}_preds.npy'.format(i))
-        comp_err = np.load('numpy/2017_{0}_yerr.npy'.format(i))
+        comp_pred = np.load('../src/numpy/2017_{0}_preds.npy'.format(i))
+        comp_err = np.load('../src/numpy/2017_{0}_yerr.npy'.format(i))
         comp_err = np.nan_to_num(comp_err)
         if i in [19, 20]:
             comp_proba = 1 - scs.norm.cdf((comp_pred - nba_stats[i]) / (.5 * comp_err))
