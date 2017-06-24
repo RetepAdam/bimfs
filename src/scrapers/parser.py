@@ -6,7 +6,7 @@ import numpy as np
 ### this is a messy one, so bear with me.
 
 def grab_from_page():
-    df_transfer_check = pd.read_csv('../data/transfer_check.csv')
+    df_transfer_check = pd.read_csv('../src/data/transfer_check.csv')
     searcher = str(stuff).replace('.html">', '</a>').split('</a>')
 
     player_schools = []
@@ -21,7 +21,7 @@ def grab_from_page():
 
 
 if __name__ == '__main__':
-    df_transfer_check = pd.read_csv('../data/transfer_check.csv')
+    df_transfer_check = pd.read_csv('../src/data/transfer_check.csv')
     player_match = []
     all_players = df_transfer_check['Player'].unique()
 

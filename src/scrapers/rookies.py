@@ -82,4 +82,4 @@ if __name__ == '__main__':
     df = pd.DataFrame(new_table, columns=cols)
     df['Player'] = df['Player'].str.strip(' *')
 
-    df.to_csv('../data/rookies.csv', index=False)
+    df.to_csv('../src/data/rookies.csv', index=False)

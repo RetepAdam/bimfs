@@ -84,7 +84,7 @@ def scrape_totals():
     for year in years:
         df2 = scrape_totals_single_year(year)
         df = df.append(df2, ignore_index=True)
-    df.to_csv('../data/player_NBADL_totals.csv', index=False)
+    df.to_csv('../src/data/player_NBADL_totals.csv', index=False)
 
 def scrape_per_36_single_year(year):
     url = "http://www.basketball-reference.com/dleague/years/dleague_{0}_per_minute.html".format(year)
@@ -167,10 +167,10 @@ def scrape_per_36():
     for year in years:
         df2 = scrape_per_36_single_year(year)
         df = df.append(df2, ignore_index=True)
-    df.to_csv('../data/player_NBADL_per_36.csv', index=False)
+    df.to_csv('../src/data/player_NBADL_per_36.csv', index=False)
 
 def clean_up_names(stat_type):
-    df = pd.read_csv('../data/player_{0}.csv'.format(stat_type))
+    df = pd.read_csv('../src/data/player_{0}.csv'.format(stat_type))
     # df['Player'] = df['Player'].str.split(' ')
 
     # a few players have two first names, so we need to address them separately
@@ -198,7 +198,7 @@ def clean_up_names(stat_type):
 
     df['Player'][451] = 'Fred VanVleet' # VanVleet typo fix
 
-    df.to_csv('../data/player_{0}.csv'.format(stat_type), index=False)
+    df.to_csv('../src/data/player_{0}.csv'.format(stat_type), index=False)
 
 if __name__ == '__main__':
     scrape_totals()

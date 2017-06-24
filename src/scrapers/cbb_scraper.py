@@ -258,7 +258,7 @@ def scrape_cbb_all_years():
         time.sleep(np.random.randint(0,30) + np.random.rand())
         df2 = scrape_cbb_full_year(year)
         df = df.append(df2, ignore_index=True)
-    df.to_csv('../data/cbb_2001_to_2017.csv', index=False)
+    df.to_csv('../src/data/cbb_2001_to_2017.csv', index=False)
 
 if __name__ == '__main__':
     scrape_cbb_all_years()

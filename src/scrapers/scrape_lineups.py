@@ -110,10 +110,10 @@ def scrape_lineups_all_years():
         time.sleep(np.random.randint(0,120) + np.random.rand())
         df2 = scrape_lineups_full_year(year)
         df = df.append(df2, ignore_index=True)
-    df.to_csv('../data/all_lineups.csv', index=False)
+    df.to_csv('../src/data/all_lineups.csv', index=False)
 
 def clean_up_lineups():
-    df = pd.read_csv('../data/all_lineups.csv')
+    df = pd.read_csv('../src/data/all_lineups.csv')
 
     # for some reason, it won't just let me do this within the column itself, so...
     lineup_list = []
@@ -122,7 +122,7 @@ def clean_up_lineups():
         lineup_list.append(df['Lineup'][i].split(' | '))
 
     df['Lineup'] = lineup_list
-    df.to_csv('../data/all_lineups.csv', index=False)
+    df.to_csv('../src/data/all_lineups.csv', index=False)
 
 if __name__ == '__main__':
     scrape_lineups_all_years()

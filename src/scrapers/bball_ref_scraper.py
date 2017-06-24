@@ -91,7 +91,7 @@ def scrape_totals():
     for year in years:
         df2 = scrape_totals_single_year(year)
         df = df.append(df2, ignore_index=True)
-    df.to_csv('../data/player_totals.csv', index=False)
+    df.to_csv('../src/data/player_totals.csv', index=False)
 
 def scrape_advanced_single_year(year):
     url = "http://www.basketball-reference.com/leagues/NBA_{0}_advanced.html".format(year)
@@ -175,7 +175,7 @@ def scrape_advanced():
     for year in years:
         df2 = scrape_advanced_single_year(year)
         df = df.append(df2, ignore_index=True)
-    df.to_csv('../data/player_advanced.csv', index=False)
+    df.to_csv('../src/data/player_advanced.csv', index=False)
 
 def scrape_per_poss_single_year(year):
     url = "http://www.basketball-reference.com/leagues/NBA_{0}_per_poss.html".format(year)
@@ -257,11 +257,11 @@ def scrape_per_poss():
     for year in years:
         df2 = scrape_per_poss_single_year(year)
         df = df.append(df2, ignore_index=True)
-    df.to_csv('../data/player_per_poss.csv', index=False)
+    df.to_csv('../src/data/player_per_poss.csv', index=False)
 
 # reformatting names to align with how they are in lineup data
 def clean_up_names(stat_type):
-    df = pd.read_csv('../data/player_{0}.csv'.format(stat_type))
+    df = pd.read_csv('../src/data/player_{0}.csv'.format(stat_type))
     df['Player'] = df['Player'].str.split(' ')
 
     # a few players have two first names, so we need to address them separately
@@ -286,7 +286,7 @@ def clean_up_names(stat_type):
 
     df['Player'] = new_names
 
-    df.to_csv('../data/player_{0}.csv'.format(stat_type), index=False)
+    df.to_csv('../src/data/player_{0}.csv'.format(stat_type), index=False)
 
 if __name__ == '__main__':
     # scrape_totals()
