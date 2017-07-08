@@ -22,12 +22,6 @@ With the above in mind, the goals for the Hooplicator are twofold:
 7. [Next Steps](#next-steps)
 8. [References](#references)
 
-### References
-Using cosine similarity to compare college prospects to NBA players: https://github.com/bernej/NBA-Draft-2017-Player-Comparison-Generator <br />
-How Do NCAA Statistics Translate to the NBA?: http://basketball-statistics.com/howdoncaastatisticstranslatetothenba.html <br />
-Predictions are Hard, Especially about Three Point Shooting: http://counting-the-baskets.typepad.com/my-blog/2014/09/prediction-are-hard-especially-about-three-point-shooting.html <br />
-Determinants of NBA Player Salaries: http://thesportjournal.org/article/determinants-of-nba-player-salaries/ <br />
-
 ## Data Collection
 
 All data for the project was scraped from Basketball-Reference.com and its sibling site Sports-Reference.com (for college basketball statistics) using BeautifulSoup to collect data from the yearly statistics into a list of numpy arrays (by row), compiled into a Pandas dataframe.
