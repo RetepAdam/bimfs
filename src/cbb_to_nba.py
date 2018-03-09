@@ -29,7 +29,7 @@ cols = df_nba.columns[25:]
 # fig, axes = plt.subplots(1,3, figsize=(12,4))
 
 # for col, ax in zip(cols, axes.flatten()):
-for i in [12, 13]:
+for i in [0, 2]:
     col = cols[i]
     y = np.array(df_nba[col])
 
@@ -44,11 +44,11 @@ for i in [12, 13]:
     # with open('models/nba_forest_{0}.pickle'.format(str.lower(col)), 'wb') as handle:
     #         pickle.dump(nba_forest, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    nba_y_hat = nba_forest.predict(nba_X_comp)
+    nba_y_hat = nba_forest.predict(nba_X_test)
 
     nba_inbag = fci.calc_inbag(nba_X_train.shape[0], nba_forest)
     nba_V_IJ_unbiased = fci.random_forest_error(nba_forest, nba_X_train,
-                                                nba_X_comp)
+                                                nba_X_test)
 
     nba_yerr = np.sqrt(nba_V_IJ_unbiased)
 

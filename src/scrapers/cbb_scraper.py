@@ -251,14 +251,14 @@ def scrape_cbb_full_year(year):
 
 def scrape_cbb_all_years():
     print('CBB:')
-    df = scrape_cbb_full_year(2017)
-    years = range(2001,2017)
+    df = scrape_cbb_full_year(2018)
+    years = range(2001,2018)
     years.sort(reverse=True)
     for year in years:
-        time.sleep(np.random.randint(0,30) + np.random.rand())
+        time.sleep(np.random.randint(0,5) + np.random.rand())
         df2 = scrape_cbb_full_year(year)
         df = df.append(df2, ignore_index=True)
-    df.to_csv('../src/data/cbb_2001_to_2017.csv', index=False)
+    df.to_csv('../data/march_5_cbb_2001_to_2018.csv', index=False)
 
 if __name__ == '__main__':
     scrape_cbb_all_years()
